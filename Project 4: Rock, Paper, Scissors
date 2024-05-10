@@ -1,0 +1,50 @@
+rock = '''
+    _______
+---'   ____)
+      (_____)
+      (_____)
+      (____)
+---.__(___)
+'''
+
+paper = '''
+    _______
+---'   ____)____
+          ______)
+          _______)
+         _______)
+---.__________)
+'''
+
+scissors = '''
+    _______
+---'   ____)____
+          ______)
+       __________)
+      (____)
+---.__(___)
+'''
+
+#Write your code below this line 👇
+images = {"rock": rock,
+  "paper": paper,
+  "scissors": scissors
+ }
+import random
+human_choice = input("What do you choose, type 'rock', 'paper', or 'scissors'\n").lower()
+
+if human_choice in images:
+    print(images[human_choice])
+    options = ['rock', 'paper', 'scissors']
+    computer = random.choice(options)
+    print(images[computer])
+    if human_choice == computer:
+        print("It's a draw")
+    elif (human_choice == "rock" and computer == "scissors") or \
+         (human_choice == "paper" and computer == "rock") or \
+         (human_choice == "scissors" and computer == "paper"):
+        print("You win!")
+    else:
+        print("You lose")
+else:
+    print("Invalid choice. Please choose 'rock', 'paper', or 'scissors'.")
