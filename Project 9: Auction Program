@@ -1,0 +1,32 @@
+should_continue = True
+while should_continue:
+    name = input("what's your name?\n")
+    price = int(input("what's your bid price?\n$"))
+    
+    yes_or_no = input("Are there any other bidders? Type 'yes' or 'no'\n")
+
+    if yes_or_no == "no":
+        should_continue = False
+    elif yes_or_no == "yes":
+        should_continue = True
+    else:
+        print("Please type correct information")
+        
+bids = []
+
+def add_new_file(name, price):
+    new_file = {}
+    new_file["name"] = name
+    new_file["price"] = price
+    bids.append(new_file)
+
+add_new_file(name, price)
+
+highest_bid = 0
+for i in bids:
+    final_name = i["name"]
+    final_price = i["price"]
+    if final_price > highest_bid:  
+        highest_bid = final_price
+        
+print(f"The winner is {final_name} with a bid of {final_price}.")
