@@ -1,3 +1,5 @@
+VERSION 1:
+
 from random import randint
 
 EASY_LEVEL_TURNS = 10
@@ -49,4 +51,58 @@ def game():
 
 
 game()
+
+VERSION 2:
+import random
+
+COMPUTER_NUMBER = random.randint(1, 100)
+
+def easy_mode():
+    global COMPUTER_NUMBER
+    attempts_remaining = 10
+    print(f'You have {attempts_remaining} attempts remaining to guess the number.')
+    while attempts_remaining > 0:
+        make_a_guess = int(input('Make a guess: '))
+        attempts_remaining -= 1
+        if make_a_guess > COMPUTER_NUMBER:
+            print('Too high')
+        elif make_a_guess < COMPUTER_NUMBER:
+            print('Too low')
+        else:
+            print(f'You win! The correct number is {COMPUTER_NUMBER}')
+            return
+        if attempts_remaining > 0:
+            print(f'You have {attempts_remaining} attempts remaining to guess the number.')
+        else:
+            print(f'Sorry, you\'ve run out of attempts. The correct number was {COMPUTER_NUMBER}.')
+
+def hard_mode():
+    global COMPUTER_NUMBER
+    attempts_remaining = 5
+    print(f'You have {attempts_remaining} attempts remaining to guess the number.')
+    while attempts_remaining > 0:
+        make_a_guess = int(input('Make a guess: '))
+        attempts_remaining -= 1
+        if make_a_guess > COMPUTER_NUMBER:
+            print('Too high')
+        elif make_a_guess < COMPUTER_NUMBER:
+            print('Too low')
+        else:
+            print(f'You win! The correct number is {COMPUTER_NUMBER}')
+            return
+        if attempts_remaining > 0:
+            print(f'You have {attempts_remaining} attempts remaining to guess the number.')
+        else:
+            print(f'Sorry, you\'ve run out of attempts. The correct number was {COMPUTER_NUMBER}.')
+
+print("Welcome to the Number Guessing Game!")
+print("I'm thinking of a number between 1 and 100.")
+option = input("Choose a difficulty. Type 'easy' or 'hard': ").strip().lower()
+if option == 'easy':
+    easy_mode()
+elif option == 'hard':
+    hard_mode()
+else:
+    print("Invalid option. Please restart the game and choose 'easy' or 'hard'.")
+
 
