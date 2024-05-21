@@ -1,0 +1,48 @@
+import random
+from game_data import data
+
+def options(data):
+    item = random.choice(data)
+    data.remove(item)
+    return item
+
+def compare(A, B, guess):
+    if (A > B and guess == 'A')or (A < B and guess == 'B'):
+        return True
+    else:
+        return False
+            
+
+score = 0
+
+
+first_item = options(data)
+first_name = first_item['name']
+first_description = first_item['description']
+first_country = first_item['country']
+first_follower_count = first_item['follower_count']  
+
+
+while True:
+    next_item = options(data)
+    next_name = next_item['name']
+    next_description = next_item['description']
+    next_country = next_item['country']
+    next_follower_count = next_item['follower_count']
+    
+    print(f"Compare A: {first_name}, {first_description}, {first_country}.")
+    print(f"Against B: {next_name},{next_description},{next_country}.")
+    guess = input("who has more followers? Type 'A' or 'B': ").upper()
+
+
+    if compare(first_follower_count,next_follower_count,guess):
+        score += 1
+        print(f"You're right, current score: {score}.")
+        first_item = next_item
+        first_name = first_item['name']
+        first_description = first_item['description']
+        first_country = first_item['country']
+        first_follower_count = first_item['follower_count']
+    else:
+        print(f"Sorry, that's wrong. Final score: {score}")
+        break
