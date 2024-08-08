@@ -1,0 +1,72 @@
+import time
+import requests
+from bs4 import BeautifulSoup
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from dotenv import load_dotenv
+import os
+
+# Load environment variables from .env file
+load_dotenv()
+EMAIL = os.environ['Email']
+PASSWORD = os.environ['Password']
+USER_AGENT = os.environ['USER_AGENT']
+USER_DATA_DIR = os.environ['USER_DATA_DIR']
+
+# URLs
+FORM_LINK = 'https://docs.google.com/forms/d/e/1FAIpQLScqhSUvaTlX04d-8kk8veZYDk4cnVIPYqDtGmax-9xeq1VOOQ/viewform?usp=sf_link'
+ZILLOW_URL = 'https://appbrewery.github.io/Zillow-Clone/'
+
+# Scrape data from Zillow URL
+response = requests.get(ZILLOW_URL)
+soup = BeautifulSoup(response.text, 'html.parser')
+
+# Extract Addresses
+address_elements = soup.find_all('a', class_='StyledPropertyCardDataArea-anchor')
+addresses = [' '.join(a.text.replace('|', ' ').split()) for a in address_elements]
+
+# Extract Prices
+price_elements = soup.find_all('span', class_='PropertyCardWrapper__StyledPriceLine')
+prices = [p.text.split('+')[0].split('/')[0] if '/' in p.text else p.text.split('+')[0] for p in price_elements]
+
+# Extract Links
+links = [link.get('href') for link in address_elements]
+
+# Debugging: Print the scraped data
+print(f"Prices: {prices}")
+print(f"Addresses: {addresses}")
+print(f"Links: {links}")
+
+# Configure Selenium WebDriver
+chrome_options = webdriver.ChromeOptions()
+chrome_options.add_experimental_option('detach', True)
+driver = webdriver.Chrome(options=chrome_options)
+
+# Navigate to Google Form
+driver.get(FORM_LINK)
+time.sleep(15)  # Allow time for the page to load
+
+# Fill out and submit the form for each property
+for i in range(len(addresses)):
+    # Find form fields and input data
+    address_field = driver.find_elements(By.CSS_SELECTOR, ".whsOnd.zHQkBf")[0]
+    price_field = driver.find_elements(By.CSS_SELECTOR, ".whsOnd.zHQkBf")[1]
+    link_field = driver.find_elements(By.CSS_SELECTOR, ".whsOnd.zHQkBf")[2]
+    
+    address_field.send_keys(addresses[i])
+    price_field.send_keys(prices[i])
+    link_field.send_keys(links[i])
+    time.sleep(5)
+
+    # Submit the form
+    submit_button = driver.find_element(By.CSS_SELECTOR, '.NPEfkd.RveJvd.snByac')
+    submit_button.click()
+    time.sleep(5)
+
+    # Click "Submit another response" to reload the form
+    submit_another_response_link = driver.find_element(By.CSS_SELECTOR, 'a')
+    submit_another_response_link.click()
+    time.sleep(10)
+
+# Optionally, close the driver
+# driver.quit()
