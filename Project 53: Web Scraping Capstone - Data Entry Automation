@@ -14,8 +14,8 @@ USER_AGENT = os.environ['USER_AGENT']
 USER_DATA_DIR = os.environ['USER_DATA_DIR']
 
 # URLs
-FORM_LINK = 'https://docs.google.com/forms/d/e/1FAIpQLScqhSUvaTlX04d-8kk8veZYDk4cnVIPYqDtGmax-9xeq1VOOQ/viewform?usp=sf_link'
-ZILLOW_URL = 'https://appbrewery.github.io/Zillow-Clone/'
+FORM_LINK = os.environ['Form_link']
+ZILLOW_URL = os.environ['Zillow_url']
 
 # Scrape data from Zillow URL
 response = requests.get(ZILLOW_URL)
