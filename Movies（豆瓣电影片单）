@@ -1,0 +1,30 @@
+import requests
+from openpyxl import Workbook
+
+pages = int(input('请输入你想抓去的页数： '))
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36'
+}
+
+# Create a new workbook and select the active worksheet
+wb = Workbook()
+ws = wb.active
+ws.append(["Title", "Types", "Link"])  # Add headers to the first row
+
+for i in range(pages):
+    url = f'https://movie.douban.com/j/chart/top_list?type=11&interval_id=100%3A90&action=&start={i*20}&limit=20'
+    response = requests.get(url, headers=headers)
+    movies = response.json()
+
+    Titles = [movie['title'] for movie in movies]
+    Types = [movie['types'] for movie in movies]
+    Links = [movie['url'] for movie in movies]
+
+    print(f'第{i+1}页数据下载成功')
+
+    # Append each movie's data to the Excel sheet
+    for j in range(len(Titles)):
+        ws.append([Titles[j], ', '.join(Types[j]), Links[j]])
+
+# Save the workbook to a file
+wb.save('豆瓣电影.xlsx')
