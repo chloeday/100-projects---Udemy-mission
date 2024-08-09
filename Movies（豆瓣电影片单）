@@ -3,7 +3,7 @@ from openpyxl import Workbook
 
 pages = int(input('请输入你想抓去的页数： '))
 headers = {
-    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36'
+    'User-Agent': Your_User_Agent
 }
 
 # Create a new workbook and activate the worksheet
