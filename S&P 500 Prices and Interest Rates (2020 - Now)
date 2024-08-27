@@ -1,0 +1,41 @@
+import pandas as pd
+import yfinance as yf
+import matplotlib.pyplot as plt
+
+# Load USA Interest Rate Data
+interest_rates_url = "interest_data.csv"  # Replace with actual data 
+interest_data = pd.read_csv(interest_rates_url)
+
+# Convert 'DATE' column to datetime and set as index
+interest_data['DATE'] = pd.to_datetime(interest_data['DATE'])
+interest_data.set_index('DATE', inplace=True)
+
+# Download S&P 500 Prices Using yfinance
+sp500 = yf.download('^GSPC', start='2020-01-01', end='2024-08-22')
+
+# Merge the datasets on the date index
+merged_data = pd.merge(sp500['Close'], interest_data['DFF'], left_index=True, right_index=True, how='inner')
+
+# Create a figure and axis
+fig, ax1 = plt.subplots(figsize=(10, 6))
+
+# Plot S&P 500 closing prices on the primary y-axis
+ax1.plot(merged_data.index, merged_data['Close'], label='S&P 500', color='blue')
+ax1.set_xlabel('Date')
+ax1.set_ylabel('S&P 500 Price', color='blue')
+ax1.tick_params(axis='y', labelcolor='blue')
+
+# Create a secondary y-axis
+ax2 = ax1.twinx()
+ax2.plot(merged_data.index, merged_data['DFF'], label='Interest Rates', color='green')
+ax2.set_ylabel('Interest Rate (%)', color='green')
+ax2.tick_params(axis='y', labelcolor='green')
+
+# Add title and legends
+plt.title('S&P 500 Prices and Interest Rates (2020 - Now)')
+ax1.legend(loc='upper left')
+ax2.legend(loc='upper right')
+
+# Show the plot
+plt.tight_layout()
+plt.show()
